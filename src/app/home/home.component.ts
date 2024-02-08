@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from '../services/products.service';
+import { IUser } from '../interfaces/types';
 
 @Component({
   selector: 'home',
@@ -13,6 +14,7 @@ import { ProductsService } from '../services/products.service';
 
 export class HomeComponent {
   title = 'Home Component';
+  user: IUser = {};
 
   constructor(private readonly productsService: ProductsService){
     console.log('home component! ');
@@ -25,8 +27,9 @@ export class HomeComponent {
     this.productsService
       .getProducts('http://localhost:3000/api/user')
       .subscribe({
-        next: (data: any) => {
-          console.log('todos: ', data);
+        next: (response: any) => {
+          console.log('todos: ', response);
+          this.user = response;
         },
         error: (error: Error) => {
           console.log("error", error);
