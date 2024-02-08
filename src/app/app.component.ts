@@ -29,6 +29,5 @@ export class AppComponent {
     array1.push(item)
   })
 
-  console.log('array1: ', array1);
   }
 }

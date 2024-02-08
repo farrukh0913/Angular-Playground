@@ -28,7 +28,6 @@ export class HomeComponent {
       .getProducts('http://localhost:3000/api/user')
       .subscribe({
         next: (response: any) => {
-          console.log('todos: ', response);
           this.user = response;
         },
         error: (error: Error) => {
