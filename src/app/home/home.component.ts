@@ -14,7 +14,7 @@ import { IUser } from '../interfaces/types';
 
 export class HomeComponent {
   title = 'Home Component';
-  user: IUser = {};
+  users: IUser[] = [];
 
   constructor(private readonly productsService: ProductsService){
     console.log('home component! ');
@@ -25,10 +25,10 @@ export class HomeComponent {
 
   fetchProducts() {
     this.productsService
-      .getProducts('http://localhost:3000/api/user')
+      .getProducts('http://localhost:3000/api/users')
       .subscribe({
         next: (response: any) => {
-          this.user = response;
+          this.users = response;
         },
         error: (error: Error) => {
           console.log("error", error);

@@ -2,7 +2,7 @@
 
 <button class="button-3" role="button" (click)="fetchProducts()">Get User</button>
 
-<span class="user-info">
+<span class="user-info"  *ngFor="let user of users">
     <h3>Id: {{ user.id }}</h3>
     <h3>Name: {{ user.name }}</h3>
 </span>
