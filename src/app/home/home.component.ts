@@ -93,9 +93,9 @@ export class HomeComponent {
   deleteUserById(key: string) {
     this.usersService.deleteUser(`/users/${key}`)
       .subscribe({
-        next: (response: any) => {
-          console.log('deleteUser Response: ', response);
-          // this.users = response;
+        next: (deletedUserResponse: IUser) => {
+          const deletedUserIndex: number = this.users.findIndex(user => user._id === deletedUserResponse._id);
+          this.users.splice(deletedUserIndex, 1);
         },
         error: (error: Error) => {
           console.log("error", error);
