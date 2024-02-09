@@ -5,6 +5,7 @@ import { UsersService } from '../services/users.service';
 import { IUser } from '../interfaces/types';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'home',
@@ -18,16 +19,16 @@ export class HomeComponent {
   title = 'Home Component';
   users: IUser[] = [];
   headings = ['Key', 'UserId', 'Name', 'Actions'];
-  loginForm!: FormGroup;
+  userForm!: FormGroup;
 
   constructor(private readonly usersService: UsersService){
     console.log('home component! ');
   }
 
   ngOnInit(){
-    this.loginForm = new FormGroup({
-      _id: new FormControl('', [Validators.required]),
-      id: new FormControl('', [Validators.required]),
+    this.userForm = new FormGroup({
+      _id: new FormControl(''),
+      id: new FormControl('', Validators.required),
       name: new FormControl('', Validators.required)
     });
   }
@@ -46,18 +47,18 @@ export class HomeComponent {
   }
 
   addUser() {
-    if(!this.loginForm.value._id){
+    if(!this.userForm.value._id){
       this.saveUser();
-      this.loginForm.reset();
+      this.userForm.reset();
     }else{
-      console.log('this.loginForm.value: ', this.loginForm.value);
-      this.updateUserById(this.loginForm.value._id, this.loginForm.value);
-      this.loginForm.reset();
+      console.log('this.userForm.value: ', this.userForm.value);
+      this.updateUserById(this.userForm.value._id, this.userForm.value);
+      this.userForm.reset();
     }
   }
 
   saveUser(){
-    this.usersService.addUser('/user', { id: this.loginForm.value.id, name: this.loginForm.value.name })
+    this.usersService.addUser('/user', { id: this.userForm.value.id, name: this.userForm.value.name })
     .subscribe({
       next: (addUserResponse: IUser) => {
         this.users.push({_id: addUserResponse._id, id: addUserResponse.id, name: addUserResponse.name });
@@ -72,7 +73,7 @@ export class HomeComponent {
   editUserById(key: string){
     if(key){
       var selectedUserIndex: number = (this.users).findIndex(user => user._id === key);
-      this.loginForm.patchValue(this.users[selectedUserIndex]);
+      this.userForm.patchValue(this.users[selectedUserIndex]);
     }
   }
 
@@ -101,6 +102,26 @@ export class HomeComponent {
           console.log("error", error);
         },
       });
+  }
+
+  downloadAndOpenFile() {
+    const data = new Blob(['Hello, world!'], { type: 'text/plain;charset=utf-8' });
+    const filename = 'hello.txt';
+    const url = URL.createObjectURL(data);
+    saveAs(data, filename);
+  }
+
+  downloadAndOpenInNewTab(): void {
+    const data = new Blob(['Hello, world!'], { type: 'text/plain;charset=utf-8' });
+    const filename = 'hello.txt';
+    const url = URL.createObjectURL(data);
+    const newTab = window.open(url, '_blank');
+    saveAs(data, filename);
+    if (newTab) {
+      newTab.addEventListener('unload', () => {
+        URL.revokeObjectURL(url);
+      });
+    }
   }
 
 }

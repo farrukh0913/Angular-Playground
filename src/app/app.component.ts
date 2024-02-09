@@ -28,6 +28,6 @@ export class AppComponent {
    Object.values(testObject).forEach(item => {
     array1.push(item)
   })
-
   }
+
 }

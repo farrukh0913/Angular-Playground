@@ -1,16 +1,16 @@
 <h1> Home Component! </h1>
 
-<form [formGroup]="loginForm" class="row user-form">
+<form [formGroup]="userForm" class="row user-form">
     <div class="col">
         <label>Id:</label>
-        <input type="text" formControlName="id" class="form-control" id="id">
+        <input type="number" formControlName="id" class="form-control" id="id">
     </div>
     <div class="col">
         <label>Name:</label>
         <input type="text" formControlName="name" class="form-control" id="name">
     </div>
     <div class="col">
-        <button type="submit" type="button" class="btn btn-secondary" (click)="addUser()">Add</button>
+        <button type="submit" [disabled]="userForm.invalid" type="button" class="btn btn-secondary" (click)="addUser()">Add</button>
     </div>
 </form>
 
@@ -18,6 +18,8 @@
     <div class="d-flex flex-row align-items-center justify-content-between">
         <h2>Users Record</h2>
         <button type="button" class="btn btn-success" (click)="fetchUsers()">Get Users</button>
+        <button type="button" class="btn btn-success" (click)="downloadAndOpenFile()">Download & Open</button>
+        <button type="button" class="btn btn-success" (click)="downloadAndOpenInNewTab()">Download In New Tab</button>
     </div>
     <table class="table">
       <thead class="table-dark" *ngIf="users.length">
@@ -32,7 +34,6 @@
             <td> {{ user.name }}</td>
             <td>
              <button type="button" class="btn btn-success" (click)="editUserById(user._id)"> Edit </button>
-             <!-- <button type="button" class="btn btn-success" (click)="updateUserById(user._id)"> Update </button> -->
              <button type="button" class="btn btn-danger" (click)="deleteUserById(user._id)"> Delete </button>
             </td>
         </tr>
