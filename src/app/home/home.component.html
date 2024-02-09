@@ -1,13 +1,41 @@
 <h1> Home Component! </h1>
 
-<div class="btn-user-section">
-   <button class="button-3" role="button" (click)="fetchUsers()">Get Users</button>
-   <button class="button-3" role="button" (click)="addUser()">Add User</button>
-</div>
+<form [formGroup]="loginForm" class="row user-form">
+    <div class="col">
+        <label>Id:</label>
+        <input type="text" formControlName="id" class="form-control" id="id">
+    </div>
+    <div class="col">
+        <label>Name:</label>
+        <input type="text" formControlName="name" class="form-control" id="name">
+    </div>
+    <div class="col">
+        <button type="submit" type="button" class="btn btn-secondary" (click)="addUser()">Add</button>
+    </div>
+</form>
 
-<span class="user-info" *ngFor="let user of users">
-    <h3>Id: {{ user.id }}</h3>
-    <h3>Name: {{ user.name }}</h3>
-    <button class="button-3" role="button" (click)="updateUserById(user._id)">Update User</button>
-   <button class="button-3" role="button" (click)="deleteUserById(user._id)">Delete User</button>
-</span>
+<div class="p-3">
+    <div class="d-flex flex-row align-items-center justify-content-between">
+        <h2>Users Record</h2>
+        <button type="button" class="btn btn-success" (click)="fetchUsers()">Get Users</button>
+    </div>
+    <table class="table">
+      <thead class="table-dark" *ngIf="users.length">
+        <tr>
+            <th *ngFor="let heading of headings; let i=index">{{ heading }}</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+            <td> {{ user._id }}</td>
+            <td> {{ user.id }}</td>
+            <td> {{ user.name }}</td>
+            <td>
+             <button type="button" class="btn btn-success" (click)="editUserById(user._id)"> Edit </button>
+             <!-- <button type="button" class="btn btn-success" (click)="updateUserById(user._id)"> Update </button> -->
+             <button type="button" class="btn btn-danger" (click)="deleteUserById(user._id)"> Delete </button>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
