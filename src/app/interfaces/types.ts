@@ -1,25 +1,10 @@
 import { HttpHeaders, HttpContext, HttpParams } from "@angular/common/http";
 
 export interface IUser{
+  _id: string;
   id?: number;
   name?: string;
 }
-
-export interface Products {
-    items: Product[];
-    total: number;
-    page: number;
-    perPage: number;
-    totalPages: number;
-  }
-
-  export interface Product {
-    id?: number;
-    price: string;
-    name: string;
-    image: string;
-    rating: number;
-  }
 
   export interface Options {
     headers?:

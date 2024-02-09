@@ -1,8 +1,13 @@
 <h1> Home Component! </h1>
 
-<button class="button-3" role="button" (click)="fetchProducts()">Get User</button>
+<div class="btn-user-section">
+   <button class="button-3" role="button" (click)="fetchUsers()">Get Users</button>
+   <button class="button-3" role="button" (click)="addUser()">Add User</button>
+</div>
 
-<span class="user-info"  *ngFor="let user of users">
+<span class="user-info" *ngFor="let user of users">
     <h3>Id: {{ user.id }}</h3>
     <h3>Name: {{ user.name }}</h3>
+    <button class="button-3" role="button" (click)="updateUserById(user._id)">Update User</button>
+   <button class="button-3" role="button" (click)="deleteUserById(user._id)">Delete User</button>
 </span>
