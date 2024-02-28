@@ -6,13 +6,15 @@ import { IUser } from '../interfaces/types';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { saveAs } from 'file-saver';
+import { GraphqlService } from '../services/graphql.service';
 
 @Component({
   selector: 'home',
   standalone: true,
   imports: [RouterOutlet, CommonModule, ReactiveFormsModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
+  providers: [GraphqlService]
 })
 
 export class HomeComponent {
@@ -21,7 +23,7 @@ export class HomeComponent {
   headings = ['Key', 'UserId', 'Name', 'Actions'];
   userForm!: FormGroup;
 
-  constructor(private readonly usersService: UsersService){
+  constructor(private readonly usersService: UsersService, private readonly graphqlService: GraphqlService){
     console.log('home component! ');
   }
 
@@ -44,6 +46,13 @@ export class HomeComponent {
           console.log("error", error);
         },
       });
+  }
+
+  fetchUsersByGQL(){
+    this.graphqlService.getUsers().subscribe((users: IUser[]) => {
+      this.users = users;
+      console.log('Graphql Users: ', users);
+    })
   }
 
   addUser() {
