@@ -23,11 +23,11 @@ export class HomeComponent {
   headings = ['Key', 'UserId', 'Name', 'Actions'];
   userForm!: FormGroup;
 
-  constructor(private readonly usersService: UsersService, private readonly graphqlService: GraphqlService){
+  constructor(private readonly usersService: UsersService, private readonly graphqlService: GraphqlService) {
     console.log('home component! ');
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.userForm = new FormGroup({
       _id: new FormControl(''),
       id: new FormControl('', Validators.required),
@@ -48,39 +48,41 @@ export class HomeComponent {
       });
   }
 
-  fetchUsersByGQL(){
+  fetchUsersByGQL() {
     this.graphqlService.getUsers().subscribe((users: IUser[]) => {
-      this.users = users;
-      console.log('Graphql Users: ', users);
+      if (users.length) {
+        this.users = [...users];
+        console.log('this.users: ', this.users);
+      }
     })
   }
 
   addUser() {
-    if(!this.userForm.value._id){
+    if (!this.userForm.value._id) {
       this.saveUser();
       this.userForm.reset();
-    }else{
+    } else {
       console.log('this.userForm.value: ', this.userForm.value);
       this.updateUserById(this.userForm.value._id, this.userForm.value);
       this.userForm.reset();
     }
   }
 
-  saveUser(){
+  saveUser() {
     this.usersService.addUser('/user', { id: this.userForm.value.id, name: this.userForm.value.name })
-    .subscribe({
-      next: (addUserResponse: IUser) => {
-        this.users.push({_id: addUserResponse._id, id: addUserResponse.id, name: addUserResponse.name });
-        console.log('this.users: ', this.users);
-      },
-      error: (error: Error) => {
-        console.log("error", error);
-      },
-    });
+      .subscribe({
+        next: (addUserResponse: IUser) => {
+          this.users.push({ _id: addUserResponse._id, id: addUserResponse.id, name: addUserResponse.name });
+          console.log('this.users: ', this.users);
+        },
+        error: (error: Error) => {
+          console.log("error", error);
+        },
+      });
   }
 
-  editUserById(key: string){
-    if(key){
+  editUserById(key: string) {
+    if (key) {
       var selectedUserIndex: number = (this.users).findIndex(user => user._id === key);
       this.userForm.patchValue(this.users[selectedUserIndex]);
     }
@@ -91,7 +93,7 @@ export class HomeComponent {
       .subscribe({
         next: (updateUserResponse: IUser) => {
           const updatedUserIndex: number = this.users.findIndex(user => user._id === updateUserResponse._id);
-          this.users[updatedUserIndex] = {_id: updateUserResponse._id, id: updateUserResponse.id, name: updateUserResponse.name};
+          this.users[updatedUserIndex] = { _id: updateUserResponse._id, id: updateUserResponse.id, name: updateUserResponse.name };
           console.log('this.users: ', this.users);
         },
         error: (error: Error) => {

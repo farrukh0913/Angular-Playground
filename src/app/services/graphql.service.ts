@@ -13,11 +13,15 @@ export class GraphqlService {
       query: gql`query GetUsers {
         users {
           id
-          _id
           name
+          _id
         }
       }`
-    }).pipe(map((response: any) => response?.data?.users || []))
+    }).pipe(map((response: any) => {
+      const users = JSON.parse(JSON.stringify(response?.data?.users || [])); // 👈️ create copy
+      users.forEach((user: any) => user["_id"] = user._id.$oid);
+      return users;
+    }))
   }
 
 }
