@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { UsersService } from '../services/users.service';
-import { IUser } from '../interfaces/types';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { saveAs } from 'file-saver';
 import { GraphqlService } from '../services/graphql.service';
+import { UsersService } from '../services/users.service';
+import { IUser } from '../interfaces/types';
 
 @Component({
   selector: 'home',
@@ -54,6 +54,8 @@ export class HomeComponent {
         this.users = [...users];
         console.log('this.users: ', this.users);
       }
+    }, error => {
+      console.log('error: ', error);
     })
   }
 
