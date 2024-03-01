@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { IUser } from '../interfaces/types';
 import { Params } from '@angular/router';
@@ -8,8 +8,8 @@ import { Params } from '@angular/router';
   providedIn: 'root',
 })
 
-
 export class UsersService {
+  readonly selectedUser = new BehaviorSubject<string>('fakhar');
   constructor(private readonly apiService: ApiService) {}
 
   // Getting products from the API
